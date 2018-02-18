@@ -11,7 +11,7 @@ export class List extends React.Component {
                 style={styles.item}
                 onPress={() => this.props.onPressItem(item)}
             >
-                <Text style={{ textAlign: 'center' }}>{item.value}</Text>
+                <Text style={{ textAlign: 'center' }}>{item.name}</Text>
             </TouchableOpacity>
         );
     }

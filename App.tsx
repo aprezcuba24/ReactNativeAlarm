@@ -1,11 +1,15 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
-import Expo, { SQLite } from 'expo';
 import { List } from './src/components/list';
-
-const db = SQLite.openDatabase('db.db');
+import { lazyInject } from './src/dinjector';
+import { TYPES as TypesRepositories, ItemRepository } from './src/repositories';
+import { ItemInterface } from './src/interfaces';
 
 export default class App extends React.Component<{}> {
+
+  @lazyInject(TypesRepositories.ItemRepository)
+  private itemRepository: ItemRepository;
+
   constructor(props: any) {
     super(props);
     this.state = {
@@ -15,11 +19,6 @@ export default class App extends React.Component<{}> {
   }
 
   componentDidMount() {
-    db.transaction((tx: any) => {
-      tx.executeSql(
-        'create table if not exists items (id integer primary key not null, done int, value text);'
-      );
-    });
     this.update();
   }
 
@@ -34,35 +33,23 @@ export default class App extends React.Component<{}> {
     )
   };
 
-  private deleteItem = (item: any) => {
-    db.transaction(
-      (tx: any) => {
-        tx.executeSql(`delete from items where id = ?;`, [item.id]);
-      },
-      null,
-      this.update
-    );
+  private deleteItem = (item: ItemInterface) => {
+    if (!item.id) {
+      return;
+    }
+    this.itemRepository.remove(item.id).subscribe(() => this.update());
   };
 
   private add = () => {
     let text = this.state.text;
-    this.setState({text: null});
-    db.transaction(
-      (tx: any) => {
-        tx.executeSql('insert into items (done, value) values (0, ?)', [text]);
-      },
-      null,
-      this.update
-    );
+    this.setState({ text: null });
+    this.itemRepository.create({
+      name: text,
+    }).subscribe(() => this.update());
   }
 
   private update = () => {
-    db.transaction((tx: any) => {
-      tx.executeSql(
-        `select * from items;`, [],
-        (_, { rows: { _array } }) => this.setState({ items: _array })
-      );
-    });
+    this.itemRepository.list().subscribe((items: ItemInterface[]) => this.setState({ items }));
   };
 
   render() {
