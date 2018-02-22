@@ -1,4 +1,6 @@
 {
+  "name": "CULabsAlarm",
+  "displayName": "CULabsAlarm",
   "expo": {
     "sdkVersion": "22.0.0",
     "packagerOpts": {
