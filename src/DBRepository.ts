@@ -1,4 +1,3 @@
-import { DBManager } from './DBManager';
 import { DBManagerInterface } from './interfaces/DBManagerInterface';
 import { DBRepositoryInterface } from './interfaces/DBRepositoryInterface';
 import * as Rx from 'rxjs';
@@ -10,9 +9,15 @@ export abstract class DBRepository<T> implements DBRepositoryInterface {
 
     constructor(
         @inject(TYPES.DBManager) protected manager: DBManagerInterface,
-        protected table: string, fields: string
+        protected table: string, fields: any
     ) {
-        this.manager.executeSql('create table if not exists ' + table + ' (id integer primary key not null, ' + fields + ');').subscribe();
+        let fieldsAndTypes: string[] = [];
+        for (let key in fields) {
+            fieldsAndTypes.push(key + ' ' + fields[key]);
+        }
+        let sql = 'create table if not exists ' + table + ' (id integer primary key not null, ' + fieldsAndTypes.join(',') + ');';
+        // this.manager.executeSql('DROP TABLE items;').subscribe();
+        this.manager.executeSql(sql).subscribe();
     }
 
     remove(id: number): Rx.Observable<boolean> {

@@ -6,7 +6,7 @@ import { injectable, inject } from "inversify";
 export class DBManager implements DBManagerInterface {
 
     constructor(
-        @inject("SQLLite") protected db: any,
+        @inject("SQLLite") protected db: any
     ) {}
 
     executeSql(sql: string, params: any[] = []): Rx.Observable<any> {

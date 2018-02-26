@@ -34,6 +34,7 @@
     "react-native-material-design-styles": "^0.2.7",
     "react-navigation": "^1.1.2",
     "reflect-metadata": "^0.1.12",
-    "rxjs": "^5.5.6"
+    "rxjs": "^5.5.6",
+    "tcomb-form-native": "^0.6.11"
   }
 }
