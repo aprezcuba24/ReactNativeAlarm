@@ -23,6 +23,13 @@ export abstract class DBRepository<T> implements DBRepositoryInterface {
     remove(id: number): Rx.Observable<boolean> {
         return this.manager.executeSql('delete from ' + this.table + ' where id = ?;', [id]);
     }
+    
+    save(entity: T): Rx.Observable<boolean> {
+        if (entity.id) {
+            return this.update(entity.id, entity);
+        }
+        return this.create(entity);
+    }
 
     create(entity: T): Rx.Observable<boolean> {
         const { fields, values } = this.doParams(entity);
@@ -32,7 +39,8 @@ export abstract class DBRepository<T> implements DBRepositoryInterface {
     update(id: number, entity: T): Rx.Observable<boolean> {
         let { fields, values } = this.doParams(entity);
         fields = fields.map(item => item + ' = ?');
-        return this.manager.executeSql('UPDATE ' + this.table + ' SET ' + fields.join(',') + ' WHERE id = ?', id);
+        values.push(id);
+        return this.manager.executeSql('UPDATE ' + this.table + ' SET ' + fields.join(',') + ' WHERE id = ?', values);
     }
 
     list(): Rx.Observable<T[]> {

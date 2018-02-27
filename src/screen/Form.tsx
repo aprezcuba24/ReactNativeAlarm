@@ -6,7 +6,7 @@ import t from 'tcomb-form-native';
 import { Button } from '../react-native-material-design/lib';
 import { WeekdaysFormFactory } from '../components/Weekdays';
 
-export class NewSchedule extends React.Component {
+export class Form extends React.Component {
     static navigationOptions = {
         title: 'New Schedule',
         headerRight: null,
@@ -17,8 +17,9 @@ export class NewSchedule extends React.Component {
 
     constructor(props: any) {
         super(props);
+        const { params } = this.props.navigation.state;
         this.state = {
-            value: {},
+            value: params || {},
         };
     }
 
@@ -33,12 +34,13 @@ export class NewSchedule extends React.Component {
             console.log(form.validate());
             return;
         }
-        this.itemRepository.create(value)
+        this.itemRepository.save(value)
             .subscribe(() => this.props.navigation.goBack());
     };
 
     render() {
         const User = t.struct({
+            id: t.Number,
             name: t.String,
             hour: t.String,
             repeat: t.Number,
@@ -49,7 +51,10 @@ export class NewSchedule extends React.Component {
             fields: {
                 weekdays: {
                     factory: WeekdaysFormFactory,
-                }
+                },
+                id: {
+                    hidden: true
+                },
             }
         };
         return (

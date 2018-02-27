@@ -1,12 +1,7 @@
 import * as React from 'react';
-import { DrawerLayoutAndroid, StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Button } from 'react-native';
-import { List } from './src/components/list';
-import { lazyInject } from './src/dinjector';
-import { TYPES as TypesRepositories, ItemRepository } from './src/repositories';
-import { ItemInterface } from './src/interfaces';
-import MainNavigator from './src/routers';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import {routers, initialRouteName} from './src/routers';
-import { Icon, Toolbar } from './src/react-native-material-design/lib';
+import { Icon } from './src/react-native-material-design/lib';
 import { StackNavigator } from 'react-navigation';
 
 export default class App extends React.Component<{}> {
@@ -23,7 +18,7 @@ export default class App extends React.Component<{}> {
   private renderTopBarHeaderRight(navigation) {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('NewSchedule')}
+        onPress={() => navigation.navigate('Form')}
       >
         <Icon name={'control-point'}
           size={30}

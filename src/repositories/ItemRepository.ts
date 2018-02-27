@@ -4,6 +4,7 @@ import { DBRepository } from './../DBRepository';
 import { injectable, inject } from "inversify";
 import { TYPES } from '../interfaces';
 import * as Rx from 'rxjs';
+import {Observable} from "rxjs/Rx";
 
 @injectable()
 export class ItemRepository extends DBRepository<ItemInterface> {
@@ -20,5 +21,17 @@ export class ItemRepository extends DBRepository<ItemInterface> {
         let newEntity: any = {...entity};
         newEntity.weekdays = JSON.stringify(newEntity.weekdays);
         return super.create(newEntity);
+    }
+
+    list(): Rx.Observable<ItemInterface[]> {
+        return super.list()
+            .flatMap(items => 
+                Observable.from(items)
+                    .map((item: ItemInterface) => {
+                        item.weekdays = JSON.parse(item.weekdays);
+                        return item;
+                    })
+                    .toArray()
+            );
     }
 }

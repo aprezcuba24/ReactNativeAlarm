@@ -22,7 +22,11 @@ export class Home extends React.Component {
         this.props.navigation.addListener('didFocus', () => this.update());
     }
 
-    private onPressItem = (item: any) => {
+    private onPressItem = (item: ItemInterface) => {
+        this.props.navigation.navigate('Form', item);
+    };
+
+    private onDeleteItem = (item: any) => {
         Alert.alert(
             'Delete',
             'Do you want delete the item: ' + item.value + '?',
@@ -40,26 +44,12 @@ export class Home extends React.Component {
         this.itemRepository.remove(item.id).subscribe(() => this.update());
     };
 
-    private add = () => {
-        let text = this.state.text;
-        this.setState({ text: null });
-        this.itemRepository.create({
-            name: text,
-        }).subscribe(() => this.update());
-    }
-
     render() {
         return (
             <View style={styles.container}>
-                <TextInput
-                    style={styles.input}
-                    placeholder="what do you need to do?"
-                    value={this.state.text}
-                    onChangeText={text => this.setState({ text })}
-                    onSubmitEditing={this.add}
-                />
                 <List
                     items={this.state.items}
+                    onDeleteItem={this.onDeleteItem}
                     onPressItem={this.onPressItem}
                 />
             </View>
@@ -74,13 +64,8 @@ export class Home extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#e2e4e6',
         justifyContent: 'center',
-        paddingTop: 50,
+        padding: 10,
     },
-    input: {
-        padding: 5,
-        borderColor: 'gray',
-        borderWidth: 1,
-    }
 });
