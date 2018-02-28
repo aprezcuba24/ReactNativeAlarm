@@ -17,10 +17,9 @@ export class ItemRepository extends DBRepository<ItemInterface> {
         })
     }
 
-    create(entity: ItemInterface): Rx.Observable<boolean> {
-        let newEntity: any = {...entity};
-        newEntity.weekdays = JSON.stringify(newEntity.weekdays);
-        return super.create(newEntity);
+    protected prepareObject(entity: ItemInterface) {
+        entity.weekdays = JSON.stringify(entity.weekdays);
+        return entity;
     }
 
     list(): Rx.Observable<ItemInterface[]> {

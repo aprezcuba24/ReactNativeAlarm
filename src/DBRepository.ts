@@ -19,12 +19,16 @@ export abstract class DBRepository<T> implements DBRepositoryInterface {
         // this.manager.executeSql('DROP TABLE items;').subscribe();
         this.manager.executeSql(sql).subscribe();
     }
+    
+    protected prepareObject(entity: T) {
+        return entity;
+    }
 
     remove(id: number): Rx.Observable<boolean> {
         return this.manager.executeSql('delete from ' + this.table + ' where id = ?;', [id]);
     }
     
-    save(entity: T): Rx.Observable<boolean> {
+    save(entity: T): Rx.Observable<boolean> {        
         if (entity.id) {
             return this.update(entity.id, entity);
         }
@@ -32,11 +36,13 @@ export abstract class DBRepository<T> implements DBRepositoryInterface {
     }
 
     create(entity: T): Rx.Observable<boolean> {
+        entity = this.prepareObject({...entity});
         const { fields, values } = this.doParams(entity);
         return this.manager.executeSql('insert into ' + this.table + ' (' + fields.join(',') + ') values (' + values.map(() => '?').join(',') + ');', values);
     }
 
     update(id: number, entity: T): Rx.Observable<boolean> {
+        entity = this.prepareObject({...entity});
         let { fields, values } = this.doParams(entity);
         fields = fields.map(item => item + ' = ?');
         values.push(id);

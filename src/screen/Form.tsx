@@ -34,13 +34,16 @@ export class Form extends React.Component {
             console.log(form.validate());
             return;
         }
+        if (value.id === null) {
+            delete value.id;
+        }
         this.itemRepository.save(value)
             .subscribe(() => this.props.navigation.goBack());
     };
 
     render() {
         const User = t.struct({
-            id: t.Number,
+            id: t.maybe(t.Any),
             name: t.String,
             hour: t.String,
             repeat: t.Number,

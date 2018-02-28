@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { PropTypes } from 'prop-types';
-import {View} from "react-native";
+import {View, ViewPropTypes} from "react-native";
 import { getColor } from './helpers';
 import VectorIconComponent from './VectorIconComponent';
 
@@ -8,7 +8,7 @@ export default class Icon extends Component {
 
     static propTypes = {
         name: PropTypes.string.isRequired,
-        style: View.propTypes.style,
+        style: ViewPropTypes.style,
         size: PropTypes.number,
         color: PropTypes.string,
         allowFontScaling: PropTypes.bool
