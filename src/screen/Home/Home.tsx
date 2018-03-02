@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { View, Alert, TextInput, StyleSheet } from 'react-native';
-import { lazyInject } from '../dinjector';
-import { TYPES as TypesRepositories, ItemRepository } from '../repositories';
-import { ItemInterface } from '../interfaces';
-import { List } from '../components/list';
+import { View, Alert, StyleSheet } from 'react-native';
+import { lazyInject } from '../../dinjector';
+import { TYPES as TypesRepositories, ItemRepository } from '../../repositories';
+import { ItemInterface } from '../../interfaces';
+import { List } from './list';
 
 export class Home extends React.Component {
     static navigationOptions = {

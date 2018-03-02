@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PropTypes } from 'prop-types';
 import { StyleSheet, Text, TouchableOpacity, FlatList, View } from 'react-native';
-import { Icon } from '../react-native-material-design/lib';
+import { Icon } from '../../react-native-material-design/lib';
 
 export class List extends React.Component {
 

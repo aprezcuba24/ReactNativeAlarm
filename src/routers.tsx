@@ -1,14 +1,10 @@
 import { Form } from './screen/Form/Form';
-import { Settings } from './screen/Settings';
-import { Home } from './screen/Home';
+import { Home } from './screen/Home/Home';
 import { StackNavigator } from 'react-navigation';
 
 const routers = {
     Home: {
         screen: Home,
-    },
-    Settings: {
-        screen: Settings,
     },
     Form: {
         screen: Form,
