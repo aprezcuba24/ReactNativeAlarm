@@ -11,7 +11,8 @@ export class ItemRepository extends DBRepository<ItemInterface> {
     constructor(@inject(TYPES.DBManager) protected manager: DBManagerInterface) {
         super(manager, 'items', {
             name: 'text',
-            hour: 'text',
+            hour: 'number',
+            minutes: 'number',
             weekdays: 'text',
             repeat: 'number',
         })

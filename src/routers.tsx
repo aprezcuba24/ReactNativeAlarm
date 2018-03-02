@@ -1,4 +1,4 @@
-import { Form } from './screen/Form';
+import { Form } from './screen/Form/Form';
 import { Settings } from './screen/Settings';
 import { Home } from './screen/Home';
 import { StackNavigator } from 'react-navigation';

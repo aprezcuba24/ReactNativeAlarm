@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
-import { lazyInject } from '../dinjector';
-import { TYPES as TypesRepositories, ItemRepository } from '../repositories';
+import { lazyInject } from '../../dinjector';
+import { TYPES as TypesRepositories, ItemRepository } from '../../repositories';
 import t from 'tcomb-form-native';
-import { Button } from '../react-native-material-design/lib';
-import { WeekdaysFormFactory } from '../components/Weekdays';
+import { Button } from '../../react-native-material-design/lib';
+import { WeekdaysFormFactory } from './Weekdays';
+import {TimeFormFactory} from "./Time";
 
 export class Form extends React.Component {
     static navigationOptions = {
@@ -18,9 +19,12 @@ export class Form extends React.Component {
     constructor(props: any) {
         super(props);
         const { params } = this.props.navigation.state;
-        this.state = {
-            value: params || {},
+        let value = params || {};
+        value.time = {
+            hour: value.hour,
+            minutes: value.minutes,
         };
+        this.state = {value};
     }
 
     onChange = (value: any) => {
@@ -37,6 +41,9 @@ export class Form extends React.Component {
         if (value.id === null) {
             delete value.id;
         }
+        value.hour = value.time.hour;
+        value.minutes = value.time.minutes;
+        delete value.time;
         this.itemRepository.save(value)
             .subscribe(() => this.props.navigation.goBack());
     };
@@ -45,18 +52,28 @@ export class Form extends React.Component {
         const User = t.struct({
             id: t.maybe(t.Any),
             name: t.String,
-            hour: t.String,
+            time: t.struct({
+                hour: t.refinement(t.Number, function (n) {
+                    return n >= 0 && n < 24;
+                }),
+                minutes: t.refinement(t.Number, function (n) {
+                    return n >= 0 && n < 60;
+                }),
+            }),
             repeat: t.Number,
             weekdays: t.maybe(t.Any),
         });
         const Form = t.form.Form;
         const options = {
             fields: {
+                id: {
+                    hidden: true
+                },
                 weekdays: {
                     factory: WeekdaysFormFactory,
                 },
-                id: {
-                    hidden: true
+                time: {
+                    factory: TimeFormFactory,
                 },
             }
         };

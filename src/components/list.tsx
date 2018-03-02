@@ -19,7 +19,7 @@ export class List extends React.Component {
                 onPress={() => this.props.onPressItem(item)}
             >
                 <View style={styles.left}>
-                    <Text style={styles.hour}>{item.hour}</Text>
+                    <Text style={styles.hour}>{item.hour}:{item.minutes}</Text>
                     <Text style={styles.name}>{item.name}</Text>
                 </View>
                 <TouchableOpacity onPress={() => this.props.onDeleteItem(item)}>
