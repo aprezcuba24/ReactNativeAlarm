@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import {routers, initialRouteName} from './src/routers';
-import { Icon } from './src/react-native-material-design/lib';
 import { StackNavigator } from 'react-navigation';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default class App extends React.Component<{}> {
   constructor(props: any) {

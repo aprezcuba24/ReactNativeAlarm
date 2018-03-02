@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView, Button } from 'react-native';
 import { lazyInject } from '../../dinjector';
 import { TYPES as TypesRepositories, ItemRepository } from '../../repositories';
 import t from 'tcomb-form-native';
-import { Button } from '../../react-native-material-design/lib';
 import { WeekdaysFormFactory } from './Weekdays';
 import {TimeFormFactory} from "./Time";
 
@@ -86,7 +85,12 @@ export class Form extends React.Component {
                     value={this.state.value}
                     onChange={this.onChange}
                 />
-                <Button text="Save" raised={true} onPress={this.onPress} />
+                <Button
+                    onPress={this.onPress}
+                    title="Save"
+                    color="#f4511e"
+                    accessibilityLabel="Learn more about this purple button"
+                />
             </ScrollView>
         );
     }
